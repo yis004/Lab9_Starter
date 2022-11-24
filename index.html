@@ -86,7 +86,14 @@
       <button>Trigger a Global Error</button>
     </section>
   </main>
-
+  <script src="https://cdn.trackjs.com/agent/v3/latest/t.js"></script>
+  <script>
+    window.TrackJS && TrackJS.install({ 
+      token: "f6bfba0ab04d4c7b92f3bf5cd3d7271c"
+      // for more configuration options, see https://docs.trackjs.com
+    });
+  </script>
+                        
   <script>
     let form = document.querySelector('form');
     form.addEventListener('submit', e => {
@@ -95,13 +102,140 @@
       let firstNum = document.querySelector('#first-num').value;
       let secondNum = document.querySelector('#second-num').value;
       let operator = document.querySelector('#operator').value;
-      output.innerHTML = eval(`${firstNum} ${operator} ${secondNum}`);
+      try {
+        output.innerHTML = eval(`${firstNum} ${operator} ${secondNum}`);
+      }
+      catch(err) {    
+        console.error(err);
+      }
+      
+
     });
 
     let errorBtns = Array.from(document.querySelectorAll('#error-btns > button'));
 
     // Start your code here
     // You may move this JS to another file if you wish
+    errorBtns[0].addEventListener('click', e => {
+      e.preventDefault();
+      console.log("console log demo");
+    });
+
+    errorBtns[1].addEventListener('click', e => {
+      e.preventDefault();
+      console.error("console log demo");
+    });
+
+    errorBtns[2].addEventListener('click', e => {
+      e.preventDefault();
+      console.count();
+    });
+
+    errorBtns[3].addEventListener('click', e => {
+      e.preventDefault();
+      console.warn("console warn demo");
+    });
+
+    errorBtns[4].addEventListener('click', e => {
+      e.preventDefault();
+      console.assert(1==2,'%0',"console assert demo");
+    });
+
+    errorBtns[5].addEventListener('click', e => {
+      e.preventDefault();
+      console.clear();
+    });
+
+    errorBtns[6].addEventListener('click', e => {
+      e.preventDefault();
+      console.dir([1,2,3]);
+    });
+
+    errorBtns[7].addEventListener('click', e => {
+      e.preventDefault();
+      console.dir(["console dir demo"]);
+    });
+
+    errorBtns[8].addEventListener('click', e => {
+      //e.preventDefault();
+      console.log("Level increase, group starts");
+      console.group();
+      console.log("Level 2");
+      console.group();
+    });
+
+    errorBtns[9].addEventListener('click', e => {
+      //e.preventDefault();
+      console.log("Group ends here");
+      console.groupEnd();
+    });
+
+    errorBtns[10].addEventListener('click', e => {
+      e.preventDefault();
+      console.table(["apples", "oranges", "bananas"]);
+    });
+
+    errorBtns[11].addEventListener('click', e => {
+      e.preventDefault();
+      console.log("timer starts")
+      console.time("Timer demo");
+    });
+
+    errorBtns[12].addEventListener('click', e => {
+      e.preventDefault();
+      console.log("timer ends")
+      console.timeEnd("Timer demo");
+    });
+
+    errorBtns[13].addEventListener('click', e => {
+      //se.preventDefault();
+      console.log("console trace demo")
+      console.trace();
+    });
+
+    window.onerror = function() {
+      console.error("Global error caught");
+    };
+
+    errorBtns[14].addEventListener('click', e => {
+      e.preventDefault();
+      xxx();
+    });
+    
+
+
+    try {
+      throw `This is throw demo`      
+    }
+    catch(err) {      
+      console.error(err);
+    }
+    finally {
+      errorBtns[14].innerHTML='Trigger a global errors';
+    }
+
+    class ValidationError extends Error {
+      constructor(message) {
+        super(message); // (1)
+        this.name = "Error type: Lab9Error"; // (2)
+      }
+    }
+
+    function test() {
+      throw new ValidationError("Testing throw with extended class!");
+    }
+
+    try {
+      test();
+      
+    }
+    catch(err) {
+      
+      console.error(err.message);
+      console.error(err.name);
+      
+    }
+    
   </script>
 </body>
 
